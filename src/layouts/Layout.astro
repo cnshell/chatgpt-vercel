@@ -1,8 +1,9 @@
 ---
-import { pwaInfo } from "virtual:pwa-info"
+// @ts-ignore
+import { pwaInfo } from 'virtual:pwa-info'
 
 export interface Props {
-  title: string
+    title: string
 }
 
 const { title } = Astro.props as Props
@@ -10,21 +11,25 @@ const { title } = Astro.props as Props
 
 <!DOCTYPE html>
 <html lang="zh-CN">
-  <head>
-    <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0,viewport-fit=cover"
-    />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="192x192" />
-    <meta name="generator" content={Astro.generator} />
-    <title>{title}</title>
-    <meta name="theme-color" content="#f6f8fa" />
-    <script src="/src/pwa.ts"></script>
-    {pwaInfo && <Fragment set:html={pwaInfo.webManifest.linkTag} />}
-  </head>
-  <body>
-    <slot />
-  </body>
+    <head>
+        <meta charset="UTF-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0,viewport-fit=cover"
+        />
+        <link rel="shortcut icon " type="images/x-icon" href="./favicon.ico" />
+        <link
+            rel="apple-touch-icon"
+            href="/apple-touch-icon.png"
+            sizes="192x192"
+        />
+        <meta name="generator" content={Astro.generator} />
+        <title>{title}</title>
+        <meta name="theme-color" content="#f6f8fa" />
+        <script src="/src/pwa.ts"></script>
+        {pwaInfo && <Fragment set:html={pwaInfo.webManifest.linkTag} />}
+    </head>
+    <body>
+        <slot />
+    </body>
 </html>

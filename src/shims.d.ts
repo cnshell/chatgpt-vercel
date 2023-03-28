@@ -1,4 +1,4 @@
-import type { AttributifyAttributes } from "@unocss/preset-attributify"
+import type { AttributifyAttributes } from '@unocss/preset-attributify'
 
 // declare module 'solid-js' {
 //   namespace JSX {
@@ -7,18 +7,18 @@ import type { AttributifyAttributes } from "@unocss/preset-attributify"
 // }
 
 declare global {
-  namespace astroHTML.JSX {
-    type HTMLAttributes = AttributifyAttributes
-  }
-  namespace JSX {
-    type HTMLAttributes<T> = AttributifyAttributes
-  }
+    namespace astroHTML.JSX {
+        type HTMLAttributes = AttributifyAttributes
+    }
+    namespace JSX {
+        type HTMLAttributes<T> = AttributifyAttributes
+    }
 }
 
-declare module "solid-js" {
-  namespace JSX {
-    interface Directives {
-      clickOutside: any
+declare module 'solid-js' {
+    namespace JSX {
+        interface Directives {
+            clickOutside: any
+        }
     }
-  }
 }
