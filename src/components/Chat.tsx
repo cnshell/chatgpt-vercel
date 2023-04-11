@@ -6,7 +6,7 @@ import SettingAction from './SettingAction'
 import PromptList from './PromptList'
 import { Fzf } from 'fzf'
 import throttle from 'just-throttle'
-import { isMobile } from '~/utils'
+import { getKey, isMobile } from '~/utils'
 import type { Setting } from '~/system'
 import { makeEventListener } from '@solid-primitives/event-listener'
 
@@ -256,7 +256,10 @@ export default function (props: {
                 password: setting().password,
                 model: setting().model
             }),
-            signal: controller.signal
+            signal: controller.signal,
+            headers: {
+                'access-token': getKey()
+            }
         })
         if (!response.ok) {
             const res = await response.json()

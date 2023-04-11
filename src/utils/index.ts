@@ -94,3 +94,7 @@ export async function fetchWithTimeout(
     clearTimeout(id)
     return response
 }
+
+export function getKey() {
+    return Date.now().toString(36)
+}

@@ -71,6 +71,10 @@ const pwd = import.meta.env.PASSWORD
 
 export const post: APIRoute = async context => {
     try {
+        const token = context.request.headers.get('access-token')
+        // if (!token || Math.abs(Date.now() - parseInt(token, 36)) > 60 * 1000) {
+        //     throw new Error('invalid.token')
+        // }
         const body: {
             messages?: ChatMessage[]
             key?: string
