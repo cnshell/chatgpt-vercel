@@ -6,7 +6,7 @@ import SettingAction from './SettingAction'
 import PromptList from './PromptList'
 import { Fzf } from 'fzf'
 import throttle from 'just-throttle'
-import { getKey, isMobile } from '~/utils'
+import { isMobile } from '~/utils'
 import type { Setting } from '~/system'
 import { makeEventListener } from '@solid-primitives/event-listener'
 
@@ -258,7 +258,7 @@ export default function (props: {
             }),
             signal: controller.signal,
             headers: {
-                'access-token': getKey()
+                from: 'baijiayun'
             }
         })
         if (!response.ok) {
