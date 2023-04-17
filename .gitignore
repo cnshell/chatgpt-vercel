@@ -8,3 +8,4 @@ dist
 .netlify/
 dev-dist/
 logs
+*.zip
