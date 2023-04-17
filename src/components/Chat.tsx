@@ -419,7 +419,7 @@ export default function (props: {
                     </Show>
                     <Show
                         when={!loading()}
-                        fallback={() => (
+                        fallback={
                             <div class="h-12 flex items-center justify-center bg-slate bg-op-15 text-slate rounded">
                                 <span>AI 正在思考...</span>
                                 <div
@@ -429,7 +429,7 @@ export default function (props: {
                                     不需要了
                                 </div>
                             </div>
-                        )}
+                        }
                     >
                         <Show when={compatiblePrompt().length}>
                             <PromptList
