@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro'
 import { fetchWithTimeout, splitKeys } from '~/utils'
-import { localKey, genBillingsTable, baseURL, fetchBilling } from '.'
+import { localKey, genBillingsTable, baseURL, fetchBilling } from './index'
 const sendKey = import.meta.env.SENDKEY
 const sendChannel = import.meta.env.SENDCHANNEL || '9'
 
