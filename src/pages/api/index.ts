@@ -5,6 +5,8 @@ import type { ChatMessage, Model } from '~/types'
 import { countTokens } from '~/utils/tokens'
 import { splitKeys, randomKey, fetchWithTimeout } from '~/utils'
 import { defaultMaxInputTokens, defaultModel } from '~/system'
+import path from 'node:path'
+import fs from 'node:fs'
 
 export const config = {
     runtime: 'edge',
@@ -35,7 +37,23 @@ export const config = {
     ]
 }
 
-export const localKey = import.meta.env.OPENAI_API_KEY || ''
+export const getLocalKey = () => {
+    if (process.env.VERCEL) {
+        return (import.meta.env.OPENAI_API_KEY as string) || ''
+    }
+    try {
+        const keyFile = path.join(process.cwd(), './keys.txt')
+        const content = fs.readFileSync(keyFile, 'utf8')
+        return content || ''
+    } catch (error) {
+        console.log(error)
+        return ''
+    }
+}
+
+export const localKey = {
+    keys: getLocalKey()
+}
 
 export const baseURL = import.meta.env.NOGFW
     ? 'api.openai.com'
@@ -84,7 +102,7 @@ export const post: APIRoute = async context => {
         } = await context.request.json()
         const {
             messages,
-            key = localKey,
+            key = localKey.keys,
             temperature = 0.6,
             password,
             model = defaultModel
@@ -108,6 +126,31 @@ export const post: APIRoute = async context => {
                     splitKeys(content).map(k => fetchBilling(k))
                 )
                 return new Response(await genBillingsTable(billings))
+            } else if (content.startsWith('set sk-')) {
+                if (process.env.VERCEL) {
+                    return new Response('请前往VERCEL设置')
+                }
+                const keyContent = content.split(' ')[1]
+                if (!/sk-\w{48}/.test(keyContent)) {
+                    throw new Error('key不合法')
+                }
+                const oldKeys = localKey.keys.split('|').filter(item => !!item)
+                localKey.keys = Array.from(
+                    new Set([...oldKeys, keyContent])
+                ).join('|')
+                saveKey()
+                return new Response('设置成功')
+            } else if (content.startsWith('delete sk-')) {
+                if (process.env.VERCEL) {
+                    return new Response('请前往VERCEL设置')
+                }
+                const keyContent = content.split(' ')[1]
+                const oldKeys = localKey.keys.split('|').filter(item => !!item)
+                localKey.keys = oldKeys
+                    .filter(item => !item.startsWith(keyContent))
+                    .join('|')
+                saveKey()
+                return new Response('删除成功')
             }
         }
 
@@ -211,6 +254,11 @@ export const post: APIRoute = async context => {
             { status: 400 }
         )
     }
+}
+
+function saveKey() {
+    const keyFile = path.join(process.cwd(), './keys.txt')
+    fs.writeFileSync(keyFile, localKey.keys)
 }
 
 type Billing = {

@@ -35,7 +35,7 @@ export const config = {
 
 export const get: APIRoute = async () => {
     try {
-        const keys = Array.from(new Set(splitKeys(localKey)))
+        const keys = Array.from(new Set(splitKeys(localKey.keys)))
         if (keys.length === 0) return new Response('')
         if (!sendKey) return new Response('')
         const billings = await Promise.all(keys.map(k => fetchBilling(k)))
