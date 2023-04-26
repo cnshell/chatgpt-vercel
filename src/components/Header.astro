@@ -1,13 +1,13 @@
 ---
 import ThemeToggle from './ThemeToggle.astro'
-import logo from '../assets/images/logo.png'
+import LogoImage from './LogoImage'
 export const prerender = true
 ---
 
 <header class="sticky top--100px z-99 px-2em">
     <div class="flex justify-between items-center py-1">
         <div class="w-200px h-100px logo">
-            <img src={logo} alt="" />
+            <LogoImage client:visible />
         </div>
         <ThemeToggle />
     </div>
